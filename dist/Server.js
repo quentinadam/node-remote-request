@@ -32,7 +32,7 @@ class CustomResponseHandler extends request_core_1.ResponseHandler {
     }
 }
 class default_1 {
-    constructor({ verbose } = { verbose: false }) {
+    constructor({ verbose = false } = { verbose: false }) {
         this.server = new rpc_1.Server((connection) => {
             connection.on('data', (data) => {
                 try {

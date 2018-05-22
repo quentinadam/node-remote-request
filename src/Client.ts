@@ -1,6 +1,6 @@
 import { Connection } from '@quentinadam/rpc';
 import AsyncValue from './AsyncValue';
-import { Wrapper, ResponseHandler, Params, Requester, Result } from '../../request-core';
+import { Wrapper, ResponseHandler, Params, Requester, Result } from '@quentinadam/request-core';
 
 function applyFinally<T>(promise: Promise<T>, fn: () => void): Promise<T> {
   return promise.then((result: T) => {

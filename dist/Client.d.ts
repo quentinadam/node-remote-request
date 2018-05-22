@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { Params, Result } from '../../request-core';
+import { Params, Result } from '@quentinadam/request-core';
 export default class Client {
     private readonly secure;
     private readonly host;

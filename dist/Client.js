@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const rpc_1 = require("@quentinadam/rpc");
 const AsyncValue_1 = __importDefault(require("./AsyncValue"));
-const request_core_1 = require("../../request-core");
+const request_core_1 = require("@quentinadam/request-core");
 function applyFinally(promise, fn) {
     return promise.then((result) => {
         fn();
