@@ -45,7 +45,7 @@ export default class {
   
   private readonly server: Server; 
 
-  constructor({verbose} = {verbose: false}) {
+  constructor({verbose = false}: {verbose: boolean} = {verbose: false}) {
     this.server = new Server((connection) => {
       connection.on('data', (data: Buffer) => {
         try {
