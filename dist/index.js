@@ -7,6 +7,4 @@ const Client_1 = __importDefault(require("./Client"));
 exports.Client = Client_1.default;
 const Server_1 = __importDefault(require("./Server"));
 exports.Server = Server_1.default;
-const request_core_1 = __importDefault(require("@quentinadam/request-core"));
-exports.Params = request_core_1.default;
 //# sourceMappingURL=index.js.map
