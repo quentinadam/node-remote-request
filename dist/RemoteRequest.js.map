@@ -1,0 +1,1 @@
+{"version":3,"file":"RemoteRequest.js","sourceRoot":"","sources":["../src/RemoteRequest.ts"],"names":[],"mappings":";;AAAA,kDAA0E;AAG1E,MAAqB,aAAc,SAAQ,yBAAe;IAExD,YAAoB,MAAoB,EAAE,MAAc;QACtD,KAAK,CAAC,MAAM,CAAC,CAAC;QADI,WAAM,GAAN,MAAM,CAAc;IAExC,CAAC;IAED,gBAAgB,CAAC,MAAiB;QAChC,OAAO,IAAI,CAAC,MAAM,CAAC,aAAa,CAAC,MAAM,CAAC,CAAC;IAC3C,CAAC;CAEF;AAVD,gCAUC"}

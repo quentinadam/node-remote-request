@@ -1,20 +1,24 @@
 {
   "name": "@quentinadam/remote-request",
-  "version": "0.0.7",
+  "version": "1.0.0",
   "author": "Quentin Adam",
   "description": "",
   "license": "MIT",
   "main": "./dist/index.js",
   "types": "./dist/index.d.js",
   "dependencies": {
-    "@quentinadam/request-core": "0.0.3",
+    "@quentinadam/request": "1.0.1",
     "@quentinadam/rpc": "0.0.3"
   },
   "devDependencies": {
-    "@types/node": "^10.1.4"
+    "@types/node": "^10.12.5",
+    "typescript": "^3.1.6"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/quentinadam/node-remote-request.git"
+  },
+  "scripts": {
+    "build": "rm -rf dist/* && tsc"
   }
 }

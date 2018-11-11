@@ -1,8 +1,14 @@
-import Client from './Client';
-import Server from './Server';
-import { Params, Result } from '@quentinadam/request-core';
+import RemoteClient from './RemoteClient';
+import RemoteRequest from './RemoteRequest';
+import RemoteRequestFactory from './RemoteRequestFactory';
+import RemoteServer from './RemoteServer';
+import { Params, Result } from '../../request';
 
-export { Client };
-export { Server };
-export { Params };
-export { Result };
+export { 
+  Params,
+  RemoteClient,
+  RemoteRequest,
+  RemoteRequestFactory,
+  RemoteServer,
+  Result,
+};

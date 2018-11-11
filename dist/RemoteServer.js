@@ -1,46 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const rpc_1 = require("@quentinadam/rpc");
-const request_core_1 = require("@quentinadam/request-core");
-class CustomResponseHandler extends request_core_1.ResponseHandler {
-    constructor({ connection, requestId }) {
-        super({ gzip: false });
-        this.connection = connection;
-        this.requestId = requestId;
-    }
-    handleResponse({ statusCode, statusMessage, headers }) {
-        const data = Buffer.from(JSON.stringify({ statusCode, statusMessage, headers }));
-        this.writeResponse({ flag: 0, data });
-    }
-    handleData(data) {
-        this.writeResponse({ flag: 1, data });
-    }
-    handleEnd() {
-        this.writeResponse({ flag: 2 });
-    }
-    handleError(error) {
-        const data = Buffer.from(error.message);
-        this.writeResponse({ flag: 3, data });
-    }
-    writeResponse({ flag, data }) {
-        let response = Buffer.allocUnsafe(5);
-        if (data !== undefined)
-            response = Buffer.concat([response, data]);
-        response.writeUInt32LE(this.requestId, 0);
-        response[4] = flag;
-        this.connection.write(response);
-    }
-}
-class default_1 {
+const request_1 = require("@quentinadam/request");
+class RemoteServer {
     constructor({ verbose = false } = { verbose: false }) {
         this.server = new rpc_1.Server((connection) => {
             connection.on('data', (data) => {
                 try {
                     const { requestId, params } = this.parseRequest(data);
                     if (verbose) {
-                        console.log({ requestId, params });
+                        console.log({ requestId, params: {
+                                url: params.url,
+                                method: params.method,
+                                headers: params.headers,
+                                body: params.body.toString(),
+                                timeout: params.timeout,
+                            } });
                     }
-                    this.handleRequest({ requestId, params, connection });
+                    this.handleRequest(connection, requestId, params);
                 }
                 catch (error) {
                     if (verbose) {
@@ -76,18 +53,41 @@ class default_1 {
         }
         const method = header.method;
         const headers = header.headers;
-        const body = bodyLength > 0 ? data.slice(12 + headerLength, 12 + headerLength + bodyLength) : undefined;
+        const body = data.slice(12 + headerLength, 12 + headerLength + bodyLength);
         const timeout = header.timeout;
         return { requestId, params: { url, method, headers, body, timeout } };
     }
-    handleRequest({ connection, requestId, params: { url, method, headers, body, timeout } }) {
-        const responseHandler = new CustomResponseHandler({ connection, requestId });
-        const requester = new request_core_1.Requester(responseHandler);
-        requester.request({ url, method, headers, body, timeout });
+    handleRequest(connection, requestId, params) {
+        const request = new request_1.RawRequest(params);
+        request.onResponse((response) => {
+            const data = Buffer.from(JSON.stringify(response));
+            this.writeResponse(connection, requestId, 0, data);
+        });
+        request.onData((data) => {
+            this.writeResponse(connection, requestId, 1, data);
+        });
+        request.onEnd((error) => {
+            if (error === undefined) {
+                this.writeResponse(connection, requestId, 2);
+            }
+            else {
+                const data = Buffer.from(error.message);
+                this.writeResponse(connection, requestId, 3, data);
+            }
+        });
+        request.execute();
+    }
+    writeResponse(connection, requestId, flag, data) {
+        let response = Buffer.allocUnsafe(5);
+        if (data !== undefined)
+            response = Buffer.concat([response, data]);
+        response.writeUInt32LE(requestId, 0);
+        response[4] = flag;
+        connection.write(response);
     }
     listen({ host, port }) {
         return this.server.listen({ port, host });
     }
 }
-exports.default = default_1;
-//# sourceMappingURL=Server.js.map
+exports.default = RemoteServer;
+//# sourceMappingURL=RemoteServer.js.map
